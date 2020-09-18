@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Hangman Game</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        h1{
+            color:rgb(221, 221, 221);
+            font-size: 80px;
+            font-family:'Courier New', Courier, monospace;
+            letter-spacing: 5px;
+        }
+        #letras{
+            margin: 30px auto 0px auto;
+        }
+        #digitadas{
+            color:rgb(221, 221, 221);
+            font-size: 20px;
+            position: relative;
+            display: flex;
+            left: 20px;
+            margin: 30px auto 20px auto;
+        }
+        #mensagem{
+            background-color: rgba(0, 0, 0, 0.295);
+            font-family:'Courier New', Courier, monospace;
+            display: inline;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-size: 180px;
+            position: relative;
+            left: -50px;
+            top: 50px;
+        }
+        .letra{
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: rgb(143, 143, 143);
+            border-radius: 500px;
+            border: none;
+            color: white;
+            text-shadow: black 0px 1px 0; 
+        }
+        .inserirLetra{
+            float: left;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 40px;
+            margin-left: 20px;
+            width: 70px;
+            height: 70px;
+            background-color: rgb(189, 189, 189);
+            border-radius: 10px;
+            border: none;
+        }
+        .botao{
+            color:rgb(221, 221, 221);
+            float: right;
+            margin: 10px 5px;
+            border: black;
+        }
+        input:focus, textarea:focus, select:focus{
+        outline: none;
+    }
+        /**************STICKMAN*****************/
+        #stickman{
+            position: relative;
+            top: -200px;
+            left: -180px;
+        }
+        .cabeca{
+            display: block;
+            position: absolute;
+            top: 200px;
+            left: 670px;
+            /*display: none;*/
+        }
+        .tronco{
+            display: block;
+            position: absolute;
+            top: 298px;
+            left: 699px;
+            /*display: none;*/
+        }
+        .bracoe{
+            display: block;
+            position: absolute;
+            top: 323px;
+            left: 614px;
+            transform: rotate(-210deg);
+            /*display: none;*/
+        }
+        .bracod{
+            display: block;
+            position: absolute;
+            top: 329px;
+            left: 710px;
+            transform: rotate(30deg);
+            /*display: none;*/
+        }
+        .pernae{
+            display: block;
+            position: absolute;
+            top: 390px;
+            left: 680px;
+            transform: rotate(30deg);
+            /*display: none;*/
+        }
+        .pernad{
+            display: block;
+            position: absolute;
+            top: 390px;
+            left: 725px;
+            transform: rotate(-30deg);
+            /*display: none;*/
+        }
+
+    </style>
+</head>
+
+<body class="bg-dark">
+    <div class="container">
+        <h1>Hangman</h1>
+        <div id="letras">
+            <input type="text" id="letra0" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra1" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra2" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra3" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra4" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra5" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra6" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra7" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra8" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra9" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra10" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra11" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra12" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra13" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra14" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra15" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra16" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra17" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra18" class="letra" maxlength="1" disabled>
+            <input type="text" id="letra19" class="letra" maxlength="1" disabled>
+        </div>
+        <div id='digitadas'>&nbsp;</div>
+        <div id="botoes">
+            <input type="text" id="inserirLetra" class="inserirLetra" maxlength="1">
+            <input class="botao btn btn-lg btn-outline-light" type="button" value="Jogar Novamente" onclick="start()">
+            <input class="botao btn btn-lg btn-outline-light" type="button" value="Dica" onclick="dica()">
+            <input id="jogar" class="botao btn btn-lg btn-outline-light" type="button" value="Inserir" onclick="jogar()">
+        </div>
+        <div id="mensagem">
+        </div>
+        <div id="stickman">
+            <img id="cabeca" class="cabeca" src="cabeca.png" height="100px">
+            <img id="bracod" class="bracod" src="bracoe.png" height="30px" width='110px'>
+            <img id="bracoe" class="bracoe" src="bracoe.png" height="30px" width='110px'>
+            <img id="tronco" class="tronco" src="tronco.png" height="100px" width="45px">
+            <img id="pernad" class="pernad" src="pernae.png" height="110px" width="30px">
+            <img id="pernae" class="pernae" src="pernad.png" height="110px" width="30px">
+        </div>
+    </div>
+<script>
+    //adiciona a tecla Enter;
+    let input = document.getElementById('inserirLetra')
+    input.addEventListener('keyup', function(event){
+        if(event.keyCode===13){
+            event.preventDefault()
+            document.getElementById('jogar').click()
+        }
+    })
+    let biblioteca =['javascript','garrafa','teclado','mouse','banco','caneta','prateleira','cabeça','altura','celular','controle','televisao','porta','gabinete','cofre','carteira','brinquedo','desodorante','caneca','oculos','monitor','carro','aviao', 'violao', 'guitarra', 'cavaleiro','concreto','matematica']
+    let qtde=biblioteca.length-1
+    let pos=Math.round(Math.random()*qtde)
+    let palavra=biblioteca[pos]
+    let tam=palavra.length
+    let cxLetras=[]
+    let acertos
+    let errosMax=7
+    let erros=0
+    let desenhos=[]
+    let acertou=false
+    let jogando=false
+
+    function defineLetras(l){
+        let obj
+        for(let i=0; i<20;i++){
+            obj=document.getElementById('letra'+i).value=''
+            obj=document.getElementById('letra'+i).style.display='none'
+        }
+        for(let i=0; i<l;i++){
+            obj=document.getElementById('letra'+i).style.display='inline-block'
+        }
+    }
+
+    function dica(){
+        window.alert(palavra.toUpperCase())
+        jogador.focus()
+    }
+
+    function jogar(){
+        jogador=document.getElementById('inserirLetra')
+        jogador.focus()
+        if(jogador.value==''){
+            alert('Digite uma letra')
+        }else{
+            if(jogando){
+                let obj
+                let letraTmp
+                let letra
+                let pesq
+                letra=jogador.value
+                jogador.value=''
+                acertou=false
+                pesq=palavra.match(letra)
+                for(pesq; pesq!=null;){
+                    letraTmp=palavra.search(letra)
+                    obj=document.getElementById('letra'+letraTmp).value=letra
+                    palavra=palavra.replace(letra,'0')
+                    acertos++
+                    pesq=palavra.match(letra)
+                    acertou=true
+                }
+                if(!acertou){
+                    document.getElementById('digitadas').innerHTML+=' ' + letra.toUpperCase() + '-'
+                    erros++
+                    if(erros<7){
+                        desenhos[erros].style.display='block'
+                    }else{
+                        document.getElementById('stickman').style.display='none'
+                        document.getElementById('mensagem').innerHTML='PERDEU!'
+                        jogando=false
+                    }
+                }
+                if(acertos==tam){
+                    document.getElementById('stickman').style.display='none'
+                    document.getElementById('mensagem').innerHTML=''
+                    document.getElementById('mensagem').innerHTML='GANHOU!'
+                    jogando=false
+                }
+            }
+        }
+    }
+
+    function gameOver(){
+        html.style.backg
+    }
+
+    function start(){   
+        jogando=true
+        jogador=document.getElementById('inserirLetra')
+        jogador.value=''
+        jogador.focus()
+        acertos=0
+        erros=0
+        acertou=false
+        document.getElementById('digitadas').innerHTML = 'Letras Inseridas: '
+        pos=Math.round(Math.random()*qtde)
+        palavra=biblioteca[pos]
+        tam=palavra.length
+        defineLetras(tam)
+        document.getElementById('mensagem').innerHTML='' //mensagem vitoria/derrota;
+        desenhos[1]=document.getElementById('cabeca')
+        desenhos[2]=document.getElementById('tronco')
+        desenhos[3]=document.getElementById('bracoe')
+        desenhos[4]=document.getElementById('bracod')
+        desenhos[5]=document.getElementById('pernae')
+        desenhos[6]=document.getElementById('pernad')    
+        for(let i=1;i<7;i++){
+            desenhos[i].style.display = 'none'
+        }
+    }
+    window.addEventListener('load', start)
+
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
